@@ -64,3 +64,10 @@ Parallel Scavenge收集器的老年代版本
 3. 最终标记：需要STW，用于修正在并发标记途中用户程序并发执行导致引用链发生变化的对象的标记。因为并行标记时对象的变化会被记录至
 Remembered Set Logs内，并且在该阶段会和Remembered Set进行合并，所以也不需要全堆扫描
 4. 筛选回收：根据回收时间限制，回收价值最高的内存区块
+## 3.8 配合使用
+|  年轻代   | 老年代  |
+|  ----    | ----  |
+| Serial   | CMS、Serial Old |
+| ParNew   | CMS、Serial Old |
+| Parallel | Scavenge SerialOld、Parallel Old |
+| G1       | G1 |
