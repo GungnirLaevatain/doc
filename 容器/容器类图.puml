@@ -1,0 +1,57 @@
+@startuml
+
+interface Collection
+interface Map
+interface List
+interface Set
+interface Queue
+interface SortedSet
+interface SortedMap
+abstract class AbstractCollection
+abstract class AbstractList
+abstract class AbstractMap
+abstract class AbstractSet
+abstract class AbstractSequentialList
+class ArrayList
+class LinkedList
+class Vector
+class Stack
+class HashSet
+class TreeSet
+class LinkedHashSet
+class HashMap
+class TreeMap
+class WeekHashMap
+class LinkedHashMap
+class HashTable
+class IdentityHashMap
+
+List..|>Collection
+Set..|>Collection
+Queue..|>Collection
+SortedSet..|>Set
+SortedMap..|>Map
+AbstractMap..|>Map
+AbstractCollection..|>Collection
+AbstractList..|>List
+AbstractList..|>AbstractCollection
+AbstractSequentialList--|>AbstractList
+AbstractSet..|>Set
+AbstractSet..|>AbstractCollection
+ArrayList--|>AbstractList
+Vector--|>AbstractList
+Stack--|>Vector
+LinkedList--|>AbstractSequentialList
+HashSet--|>AbstractSet
+TreeSet--|>AbstractSet
+TreeSet--|>SortedSet
+LinkedHashSet--|>HashSet
+HashMap--|>AbstractMap
+LinkedHashMap--|>HashMap
+TreeMap--|>AbstractMap
+TreeMap--|>SortedMap
+WeekHashMap--|>AbstractMap
+HashTable--|>AbstractMap
+IdentityHashMap--|>AbstractMap
+
+@enduml
