@@ -1,0 +1,13 @@
+# 1 实例化
+构造器生成对象实例
+# 2 属性注入
+注入各种属性和依赖
+# 3 初始化
+初始化前调用BeanPostProcess的postProcessBeforeInitialization方法，例如根据实现不同的Aware接口，注入ApplicationContext，Environment等对象以及
+调用PostConstruct注解的方法等。  
+处理处理完后，调用定义的initMethod
+再调用BeanPostProcess的postProcessAfterInitialization方法以执行一些初始化后的操作
+# 4 销毁
+基于后置处理器InitDestroyAnnotationBeanPostProcessor调用preDestroy注解标注的方法  
+若实现了DisposableBean接口，则执行destroy方法  
+执行配置的destroy-method
