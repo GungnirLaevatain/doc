@@ -1,0 +1,266 @@
+@startuml
+interface EnvironmentCapable {
+    + {abstract} Environment getEnvironment()
+}
+note bottom of EnvironmentCapable: 标志实现该接口的类\n可以提供Environment对象
+interface BeanFactory {
+    + {abstract} Object getBean(String name)
+    + {abstract} <T> T getBean(String name, Class<T> requiredType)
+    + {abstract} Object getBean(String name, Object... args)
+    + {abstract} <T> T getBean(Class<T> requiredType)
+    + {abstract} <T> T getBean(Class<T> requiredType, Object... args)
+    + {abstract} <T> ObjectProvider<T> getBeanProvider(Class<T> requiredType)
+    + {abstract} <T> ObjectProvider<T> getBeanProvider(ResolvableType requiredType)
+    + {abstract} boolean containsBean(String name)
+    + {abstract} boolean isSingleton(String name)
+    + {abstract} boolean isPrototype(String name)
+    + {abstract} boolean isTypeMatch(String name, ResolvableType typeToMatch)
+    + {abstract} boolean isTypeMatch(String name, Class<?> typeToMatch)
+    + {abstract} Class<?> getType(String name)
+    + {abstract} String[] getAliases(String name)
+}
+note bottom of BeanFactory: 定义bean容器对外暴露的最基本的方法
+interface ListableBeanFactory {
+    + {abstract} boolean containsBeanDefinition(String beanName)
+    + {abstract} int getBeanDefinitionCount()
+    + {abstract} String[] getBeanDefinitionNames()
+    + {abstract} String[] getBeanNamesForType(ResolvableType type)
+    + {abstract} String[] getBeanNamesForType(Class<?> type)
+    + {abstract} String[] getBeanNamesForType(Class<?> type, boolean includeNonSingletons, boolean allowEagerInit)
+    + {abstract} <T> Map<String, T> getBeansOfType(Class<T> type)
+    + {abstract} <T> Map<String, T> getBeansOfType(Class<T> type, boolean includeNonSingletons, boolean allowEagerInit)
+    + {abstract} String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotationType)
+    + {abstract} Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType)
+    + {abstract} <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType)
+}
+note bottom of ListableBeanFactory: 定义可用于枚举访问bean的方法
+interface HierarchicalBeanFactory {
+    + {abstract} BeanFactory getParentBeanFactory()
+    + {abstract} boolean containsLocalBean(String name)
+}
+note bottom of HierarchicalBeanFactory: 标志这是个分层beanfactory,\n并提供父beanfactory访问方法
+interface MessageSource {
+    + {abstract} String getMessage(String code, Object[] args, String defaultMessage, Locale locale)
+    + {abstract} String getMessage(String code, Object[] args, Locale locale)
+    + {abstract} String getMessage(MessageSourceResolvable resolvable, Locale locale)
+}
+note bottom of MessageSource: 定义对消息进行国际化的方法
+interface ApplicationEventPublisher {
+    + {abstract} void publishEvent(ApplicationEvent event)
+    + {abstract} void publishEvent(Object event)
+}
+note bottom of ApplicationEventPublisher: 标志这是个应用事件发送者,\n并定义事件发送方法
+interface ResourceLoader {
+    + {abstract} Resource getResource(String location)
+    + {abstract} ClassLoader getClassLoader()
+}
+note bottom of ResourceLoader: 定义根据路径加载资源的方法
+interface ResourcePatternResolver {
+    + {abstract} Resource[] getResources(String locationPattern)
+}
+note bottom of ResourcePatternResolver: 定义根据表达式匹配加载多个资源的方法
+interface ApplicationContext {
+    + {abstract} String getId()
+    + {abstract} String getApplicationName()
+    + {abstract} String getDisplayName()
+    + {abstract} long getStartupDate()
+    + {abstract} ApplicationContext getParent()
+    + {abstract} AutowireCapableBeanFactory getAutowireCapableBeanFactory()
+}
+note left of ApplicationContext: spring上下文的核心接口,\n定义上下文对外只读的基础方法
+interface ConfigurableApplicationContext {
+    + {abstract} void setId(String id)
+    + {abstract} void setParent(ApplicationContext parent)
+    + {abstract} void setEnvironment(ConfigurableEnvironment environment)
+    + {abstract} ConfigurableEnvironment getEnvironment()
+    + {abstract} void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor)
+    + {abstract} void addApplicationListener(ApplicationListener<?> listener)
+    + {abstract} void addProtocolResolver(ProtocolResolver resolver)
+    + {abstract} void refresh()
+    + {abstract} void registerShutdownHook()
+    + {abstract} boolean isActive()
+    + {abstract} ConfigurableListableBeanFactory getBeanFactory()
+}
+note right of ConfigurableApplicationContext: 扩展ApplicationContext,\n定义可修改上下文配置的接口
+interface Lifecycle {
+    + {abstract} void start()
+    + {abstract} void stop()
+    + {abstract} boolean isRunning()
+}
+note left of Lifecycle: 定义bean生命周期的控制方法
+interface WebApplicationContext {
+    + {abstract} ServletContext getServletContext()
+}
+note left of WebApplicationContext: 标志实现类是适配web的应用上下文环境,\n并定义web环境下特有方法
+interface ConfigurableWebApplicationContext {
+    + {abstract} void setServletContext(ServletContext servletContext)
+    + {abstract} setServletConfig(ServletConfig servletConfig)
+    + {abstract} ServletConfig getServletConfig()
+    + {abstract} void setNamespace(String namespace)
+    + {abstract} String getNamespace()
+    + {abstract} void setConfigLocation(String configLocation)
+    + {abstract} void setConfigLocations(String... configLocations)
+    + {abstract} String[] getConfigLocations()
+}
+note top of ConfigurableWebApplicationContext: 标志实现类是适配web的应用上下文环境,\n并定义web环境下特有方法
+abstract class AbstractApplicationContext{
+    + void setDisplayName(String displayName)
+    + List<BeanFactoryPostProcessor> getBeanFactoryPostProcessors()
+    + Collection<ApplicationListener<?>> getApplicationListeners()
+}
+note left of AbstractApplicationContext: ApplicationContext的抽象实现类,\n只实现了公共方法
+class DefaultResourceLoader{
+    + void setClassLoader(ClassLoader classLoader)
+    + void addProtocolResolver(ProtocolResolver resolver)
+    + Collection<ProtocolResolver> getProtocolResolvers()
+    + <T> Map<Resource, T> getResourceCache(Class<T> valueType)
+    + void clearResourceCaches()
+}
+note right of DefaultResourceLoader: 默认的资源加载接口的实现类
+abstract class AbstractRefreshableApplicationContext{
+    + void setAllowBeanDefinitionOverriding(boolean allowBeanDefinitionOverriding)
+    + void setAllowCircularReferences(boolean allowCircularReferences)
+}
+note left of AbstractRefreshableApplicationContext: 支持重建容器(BeanFactory)的\nApplicationContext的抽象实现类
+abstract class AbstractRefreshableConfigApplicationContext{
+    + void setAllowBeanDefinitionOverriding(boolean allowBeanDefinitionOverriding)
+    + void setAllowCircularReferences(boolean allowCircularReferences)
+}
+interface Aware {
+}
+note left of Aware: 标记接口,标志该类\n可调用部分指定方法
+interface BeanNameAware {
+    + {abstract} void setBeanName(String name)
+}
+interface InitializingBean {
+    + {abstract} void afterPropertiesSet()
+}
+note bottom of InitializingBean: 标志实现类在属性初始化后\n需要调用指定方法
+abstract class AbstractRefreshableWebApplicationContext{
+}
+interface ThemeSource {
+    + {abstract} Theme getTheme(String themeName)
+}
+abstract class AbstractXmlApplicationContext{
+    + void setValidating(boolean validating)
+}
+class GenericApplicationContext{
+    + void setAllowBeanDefinitionOverriding(boolean allowBeanDefinitionOverriding)
+    + void setAllowCircularReferences(boolean allowCircularReferences)
+    + void setResourceLoader(ResourceLoader resourceLoader)
+    + DefaultListableBeanFactory getDefaultListableBeanFactory()
+    + <T> void registerBean(Class<T> beanClass, Object... constructorArgs)
+    + <T> void registerBean(String beanName, Class<T> beanClass, Object... constructorArgs)
+    + <T> void registerBean(Class<T> beanClass, BeanDefinitionCustomizer... customizers)
+    + <T> void registerBean(String beanName, Class<T> beanClass, BeanDefinitionCustomizer... customizers)
+    + <T> void registerBean(Class<T> beanClass, Supplier<T> supplier, BeanDefinitionCustomizer... customizers)
+    + <T> void registerBean(String beanName, Class<T> beanClass, Supplier<T> supplier, BeanDefinitionCustomizer... customizers)
+}
+interface BeanDefinitionRegistry {
+    + {abstract} void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
+    + {abstract} void removeBeanDefinition(String beanName)
+    + {abstract} BeanDefinition getBeanDefinition(String beanName)
+    + {abstract} boolean containsBeanDefinition(String beanName)
+    + {abstract} String[] getBeanDefinitionNames()
+    + {abstract} int getBeanDefinitionCount()
+    + {abstract} boolean isBeanNameInUse(String beanName)
+}
+note bottom of BeanDefinitionRegistry: 定义BeanDefinition注册方法
+class GenericGroovyApplicationContext{
+    + GroovyBeanDefinitionReader getReader()
+    + void load(Resource... resources)
+    + void load(String... resourceLocations)
+    + void load(Class<?> relativeClass, String... resourceNames)
+}
+class GenericWebApplicationContext{
+}
+note bottom of GenericGroovyApplicationContext: 扩展支持读取基于\nGroovy语法定义的bean
+class GenericXmlApplicationContext{
+    + XmlBeanDefinitionReader getReader()
+    + void setValidating(boolean validating)
+    + void load(Resource... resources)
+    + void load(String... resourceLocations)
+    + void load(Class<?> relativeClass, String... resourceNames)
+}
+note top of GenericXmlApplicationContext: 扩展支持读取基于\nXML语法定义的bean
+class GroovyWebApplicationContext{
+}
+class AnnotationConfigApplicationContext{
+    + void setBeanNameGenerator(BeanNameGenerator beanNameGenerator)
+    + void setScopeMetadataResolver(ScopeMetadataResolver scopeMetadataResolver)
+}
+note right of AnnotationConfigApplicationContext: 扩展支持基于\n注解的bean定义
+interface AnnotationConfigRegistry{
+    + {abstract} void register(Class<?>... annotatedClasses)
+    + {abstract} void scan(String... basePackages)
+}
+class AnnotationConfigWebApplicationContext{
+    + void setBeanNameGenerator(BeanNameGenerator beanNameGenerator)
+    + void setScopeMetadataResolver(ScopeMetadataResolver scopeMetadataResolver)
+}
+class ClassPathXmlApplicationContext{
+}
+class FileSystemXmlApplicationContext{
+}
+class ResourceAdapterApplicationContext{
+}
+note bottom of ResourceAdapterApplicationContext: 扩展支持读取基于\nJCA定义的bean
+class StaticApplicationContext{
+    + StaticMessageSource getStaticMessageSource()
+    + void registerSingleton(String name, Class<?> clazz)
+    + void registerSingleton(String name, Class<?> clazz, MutablePropertyValues pvs)
+    + void registerPrototype(String name, Class<?> clazz)
+    + void registerPrototype(String name, Class<?> clazz, MutablePropertyValues pvs)
+    + void addMessage(String code, Locale locale, String defaultMessage)
+}
+class StaticWebApplicationContext{
+}
+class StubWebApplicationContext{
+}
+ListableBeanFactory--|>BeanFactory
+HierarchicalBeanFactory--|>BeanFactory
+ApplicationContext--|>EnvironmentCapable
+ApplicationContext--|>ListableBeanFactory
+ApplicationContext--|>HierarchicalBeanFactory
+ApplicationContext--|>ApplicationEventPublisher
+ApplicationContext--|>MessageSource
+ApplicationContext--|>ResourcePatternResolver
+ResourcePatternResolver--|>ResourceLoader
+ConfigurableApplicationContext--|>ApplicationContext
+ConfigurableApplicationContext--|>Lifecycle
+WebApplicationContext--|>ApplicationContext
+ConfigurableWebApplicationContext--|>WebApplicationContext
+ConfigurableWebApplicationContext--|>ConfigurableApplicationContext
+AbstractApplicationContext..|>ConfigurableApplicationContext
+AbstractApplicationContext--|>DefaultResourceLoader
+DefaultResourceLoader..|>ResourceLoader
+AbstractRefreshableApplicationContext--|>AbstractApplicationContext
+AbstractRefreshableConfigApplicationContext--|>AbstractRefreshableApplicationContext
+BeanNameAware--|>Aware
+AbstractRefreshableConfigApplicationContext..|>BeanNameAware
+AbstractRefreshableConfigApplicationContext..|>InitializingBean
+AbstractRefreshableWebApplicationContext--|>AbstractRefreshableConfigApplicationContext
+AbstractRefreshableWebApplicationContext..|>ConfigurableWebApplicationContext
+AbstractRefreshableWebApplicationContext..|>ThemeSource
+AbstractXmlApplicationContext--|>AbstractRefreshableWebApplicationContext
+GenericApplicationContext--|>AbstractApplicationContext
+GenericApplicationContext..|>BeanDefinitionRegistry
+GenericGroovyApplicationContext--|>GenericApplicationContext
+GenericWebApplicationContext--|>GenericApplicationContext
+GenericWebApplicationContext..|>ConfigurableWebApplicationContext
+GenericWebApplicationContext..|>ThemeSource
+GenericXmlApplicationContext--|>GenericApplicationContext
+GroovyWebApplicationContext--|>AbstractRefreshableWebApplicationContext
+AnnotationConfigApplicationContext--|>GenericApplicationContext
+AnnotationConfigApplicationContext..|>AnnotationConfigRegistry
+AnnotationConfigWebApplicationContext--|>AbstractRefreshableWebApplicationContext
+AnnotationConfigWebApplicationContext..|>AnnotationConfigRegistry
+ClassPathXmlApplicationContext--|>AbstractXmlApplicationContext
+FileSystemXmlApplicationContext--|>AbstractXmlApplicationContext
+ResourceAdapterApplicationContext--|>GenericApplicationContext
+StaticApplicationContext--|>GenericApplicationContext
+StaticWebApplicationContext--|>StaticApplicationContext
+StaticWebApplicationContext..|>ConfigurableWebApplicationContext
+StaticWebApplicationContext..|>ThemeSource
+StubWebApplicationContext..|>WebApplicationContext
+@enduml
