@@ -1,0 +1,24 @@
+@startuml
+abstract class BaseJudgmentMediator{
+   + {abstract} void win(int chip, BasePlayer basePlayer)
+}
+abstract class BasePlayer{
+   + {abstract} void win(int chip, BaseJudgmentMediator mediator)
+   + {abstract} void lose(int chip)
+}
+abstract class JudgmentMediator{
+   - BasePlayer first
+   - BasePlayer second
+   + void win(int chip, BasePlayer basePlayer)
+}
+abstract class Player{
+   - int chip
+   + void win(int chip, BaseJudgmentMediator mediator)
+   + void lose(int chip)
+}
+Player --|> BasePlayer
+JudgmentMediator --|> BaseJudgmentMediator
+JudgmentMediator --> Player
+BaseJudgmentMediator..>BasePlayer
+BasePlayer..>BaseJudgmentMediator
+@enduml

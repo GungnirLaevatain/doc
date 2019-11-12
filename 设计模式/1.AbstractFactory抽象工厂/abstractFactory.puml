@@ -1,0 +1,37 @@
+@startuml
+interface AbstractFactory{
+  +{abstract} Product create()
+}
+class AFactory{
+  +{method} Product create()
+}
+class BFactory{
+  +{method} Product create()
+}
+interface Product{
+    +{abstract} String getName()
+}
+class AProduct{
+    +String getName()
+}
+class BProduct{
+    +String getName()
+}
+class FactoryProducer{
+    +{static}AbstractFactory createFactory(String type)
+}
+class Client{
+    +{static}void main(String[] args)
+}
+BFactory..|> AbstractFactory
+AFactory..|> AbstractFactory
+AProduct..|> Product
+BProduct..|> Product
+AFactory..>AProduct
+BFactory..>BProduct
+FactoryProducer..>Factory :创建工厂
+Factory..>Product :创建产品族
+Client..>FactoryProducer :使用静态工厂创建产品族的工厂
+Client..>Factory :使用工厂创建产品族
+Client..>Product :使用创建出来的产品族
+@enduml

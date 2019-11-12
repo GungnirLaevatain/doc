@@ -1,0 +1,33 @@
+@startuml
+interface Builder{
+  +{abstract} void buildPart(String part)
+  +{abstract} void buildName(String name)
+  +{abstract} Product getProduct()
+}
+class ABuilder{
+  + void buildPart(String part)
+  + void buildName(String name)
+  + Product getProduct()
+}
+class Director{
+    - Builder builder;
+    + Director(Builder builder)
+    + void construct()
+}
+class Product{
+    - String name;
+    - String part;
+    + String getName()
+    + void setName(String name)
+    + String getPart()
+    + void setPart(String part)
+}
+class Client{
+    +{static}void main(String[] args)
+}
+ABuilder ..|> Builder
+ABuilder ..> Product
+Director o--> Builder
+Client ..> Builder :构建生成器，并获取产品
+Client ..> Director :进行产品对象的生成
+@enduml

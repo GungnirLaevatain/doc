@@ -1,0 +1,21 @@
+@startuml
+interface Printf{
+  +{abstract} void print(String source)
+}
+class PrintfProxy{
+  # Printf printf
+  + PrintfProxy(Printf printf)
+  + void print(String source)
+}
+class CommonPrintf{
+  + void print(String source)
+}
+
+class Client{
+    +{static}void main(String[] args)
+}
+PrintfProxy....|> Printf
+CommonPrintf..|> Printf
+PrintfProxy-->Printf :代理
+Client..>Printf
+@enduml

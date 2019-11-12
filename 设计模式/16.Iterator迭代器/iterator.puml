@@ -1,0 +1,29 @@
+@startuml
+interface Iterator{
+   + boolean hasNext()
+   + T next()
+}
+interface IteratorContainer{
+   + Iterator<T> toIterator()
+}
+class StringArrayIterator{
+   - String[] array
+   - int location
+   + StringArrayIterator(String[] array)
+   + boolean hasNext()
+   + String next()
+}
+class StringArrayContainer{
+   - String[] array
+   + StringArrayContainer(String[] array)
+   + Iterator<String> toIterator()
+}
+class Client{
+    +{static}void main(String[] args)
+}
+StringArrayIterator ..|> Iterator
+StringArrayContainer ..|> IteratorContainer
+StringArrayContainer..>StringArrayIterator
+Client ..> StringArrayContainer
+Client ..> Iterator
+@enduml

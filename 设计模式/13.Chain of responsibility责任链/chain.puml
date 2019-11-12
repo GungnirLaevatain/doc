@@ -1,0 +1,21 @@
+@startuml
+abstract class AbstractLogHandler{
+  # AbstractLogHandler nextHandler
+  + void setNextHandler(AbstractLogHandler nextHandler)
+  + {abstract} void log(String msg, String level)
+}
+class InfoLogHandler{
+  + void log(String msg, String level)
+}
+class ErrorLogHandler{
+  + void log(String msg, String level)
+}
+
+class Client{
+    +{static}void main(String[] args)
+}
+AbstractLogHandler --> AbstractLogHandler
+InfoLogHandler--|> AbstractLogHandler
+ErrorLogHandler--|>AbstractLogHandler
+Client..>AbstractLogHandler
+@enduml

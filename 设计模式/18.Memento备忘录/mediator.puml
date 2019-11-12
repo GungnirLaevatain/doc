@@ -1,0 +1,19 @@
+@startuml
+class Caretaker{
+   - Memento memento
+   + void saveMemento(Memento memento)
+   + Memento getMemento()
+}
+class Memento{
+   - String state
+   + String getState()
+}
+class Originator{
+   - String state
+   + void setState(String state)
+   + Memento saveStateToMemento()
+   + recoveryFromMemento(Memento memento)
+}
+Caretaker --> Memento
+Originator ..> Memento
+@enduml

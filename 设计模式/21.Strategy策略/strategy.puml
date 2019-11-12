@@ -1,0 +1,19 @@
+@startuml
+class Context{
+   - Strategy strategy
+   + void setStrategy(Strategy strategy)
+   + int operation(int num1, int num2)
+}
+interface Strategy{
+   + {abstract} int operation(int num1, int num2)
+}
+class AddOperation{
+   + int operation(int num1, int num2)
+}
+class SubOperation{
+   + int operation(int num1, int num2)
+}
+AddOperation ..|> Strategy
+SubOperation ..|> Strategy
+Context-->Strategy
+@enduml

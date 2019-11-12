@@ -1,0 +1,28 @@
+@startuml
+class Computer{
+   - Cpu cpu
+   - Disk disk
+   - Memory memory
+   + void start()
+   + void stop()
+}
+class Cpu{
+   + void start()
+   + void stop()
+}
+class Disk{
+   + void start()
+   + void stop()
+}
+class Memory{
+   + void start()
+   + void stop()
+}
+class Client{
+    +{static}void main(String[] args)
+}
+Computer --> Cpu
+Computer --> Disk
+Computer --> Memory
+Client ..> Computer
+@enduml

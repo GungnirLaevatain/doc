@@ -1,0 +1,23 @@
+@startuml
+class Context{
+   - int state
+   + void setState(State state)
+   + void start()
+   + void stop()
+}
+interface State{
+   + {abstract} void start(Context context)
+   + {abstract} void stop(Context context)
+}
+class StartedState{
+   + void start(Context context)
+   + void stop(Context context)
+}
+class StoppedState{
+   + void start(Context context)
+   + void stop(Context context)
+}
+StartedState ..|> State
+StoppedState ..|> State
+Context-->State
+@enduml

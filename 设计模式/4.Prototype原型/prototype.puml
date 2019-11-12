@@ -1,0 +1,30 @@
+@startuml
+class Holder{
+  -{static} Map<String, Product> productMap
+  +{static} void register(String type, Product product)
+  +{static} Product getProduct(String type)
+}
+interface Product{
+    +{abstract} Product clone();
+    +{abstract} void init();
+    +{abstract} String name();
+}
+class AProduct{
+    + Product clone();
+    + void init();
+    + String name();
+}
+class BProduct{
+    + Product clone();
+    + void init();
+    + String name();
+}
+class Client{
+    +{static}void main(String[] args)
+}
+Holder o--> Product :持有原型
+AProduct ..|> Product
+BProduct ..|> Product
+Client ..> Holder :获取产品
+Client ..> Product :使用产品
+@enduml

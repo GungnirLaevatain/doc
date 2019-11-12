@@ -1,0 +1,25 @@
+@startuml
+interface Char{
+   + char targetChar()
+   + char originChar()
+}
+class A{
+   + char targetChar()
+   + char originChar()
+}
+class B{
+   + char targetChar()
+   + char originChar()
+}
+class CharFactory{
+   -{static} Map<Character, Char> charMap
+   +{static} Char findChar(char origin)
+}
+class Client{
+    +{static}void main(String[] args)
+}
+A ..|> Char
+B ..|> Char
+CharFactory --> Char
+Client ..> CharFactory
+@enduml

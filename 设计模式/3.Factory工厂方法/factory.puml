@@ -1,0 +1,32 @@
+@startuml
+interface Factory{
+  +{abstract} Product createProduct()
+}
+class AFactory{
+  +{method} Product createProduct()
+}
+class BFactory{
+  +{method} Product createProduct()
+}
+interface Product{
+    +{abstract} String getName()
+}
+class AProduct{
+    +String getName()
+}
+class BProduct{
+    +String getName()
+}
+class Client{
+    +{static}void main(String[] args)
+}
+BFactory..|> Factory
+AFactory..|> Factory
+AProduct..|> Product
+BProduct..|> Product
+AFactory..>AProduct
+BFactory..>BProduct
+Factory..>Product :创建
+Client..>Factory :使用工厂创建产品
+Client..>Product :使用创建出来的产品
+@enduml

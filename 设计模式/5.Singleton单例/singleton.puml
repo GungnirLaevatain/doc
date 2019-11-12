@@ -1,0 +1,10 @@
+@startuml
+class Singleton{
+   -{static} Singleton instance
+   +{static} Singleton getInstance()
+}
+class Client{
+    +{static}void main(String[] args)
+}
+Client ..> Singleton :获取单例实体
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+interface Jpeg{
+   + String getBody()
+}
+
+class EmptyJpeg{
+   + String getBody()
+}
+
+interface Png{
+   + byte[] getBody()
+}
+
+class EmptyPng{
+   + byte[] getBody()
+}
+
+class JpegToPngAdapter{
+   - Jpeg jpeg
+   + byte[] getBody()
+}
+
+interface PngReader{
+   + String read(Png png)
+}
+
+class DefaultPngReader{
+   + String read(Png png)
+}
+
+class Client{
+    +{static}void main(String[] args)
+}
+EmptyJpeg --|> Jpeg
+EmptyPng --|> Png
+JpegToPngAdapter --|> Png
+DefaultPngReader --|> PngReader
+JpegToPngAdapter o--> Jpeg
+PngReader..>Png :读取内容
+Client ..> PngReader :构建png格式读取器进行图片读取
+Client ..> Png :读取png
+Client ..> JpegToPngAdapter :读取jpeg
+@enduml

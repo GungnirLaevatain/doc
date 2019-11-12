@@ -1,0 +1,35 @@
+@startuml
+interface Command{
+  + {abstract} void execute()
+}
+
+class InfoCommand{
+  - LogReceiver logReceiver
+  + InfoCommand(LogReceiver logReceiver)
+  + void execute()
+}
+
+class ErrorCommand{
+  - LogReceiver logReceiver
+  + ErrorCommand(LogReceiver logReceiver)
+  + void execute()
+}
+
+class Invoke{
+  + void invoke(Command command)
+}
+
+class LogReceiver{
+  + void logInfo()
+  + void logError()
+}
+
+class Client{
+    +{static}void main(String[] args)
+}
+Invoke..> Command
+InfoCommand..|> Command
+ErrorCommand..|>Command
+InfoCommand-->LogReceiver
+ErrorCommand-->LogReceiver
+@enduml

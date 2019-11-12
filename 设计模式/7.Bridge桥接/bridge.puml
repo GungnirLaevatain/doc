@@ -1,0 +1,37 @@
+@startuml
+interface Color{
+   + String getColor()
+}
+
+class RedColor{
+   + String getColor()
+}
+
+class WhiteColor{
+   + String getColor()
+}
+
+abstract class BaseDraw{
+   # Color color
+   + void setColor(Color color)
+   + {abstract} void draw()
+}
+
+class CircleDraw{
+   + void draw()
+}
+
+class SquareDraw{
+   + void draw()
+}
+
+class Client{
+    +{static}void main(String[] args)
+}
+RedColor --|> Color
+WhiteColor --|> Color
+CircleDraw --|> BaseDraw
+SquareDraw --|> BaseDraw
+BaseDraw o--> Color
+Client ..> BaseDraw :进行绘画
+@enduml

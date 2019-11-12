@@ -1,0 +1,25 @@
+@startuml
+interface Printf{
+  +{abstract} void printString(String source)
+}
+abstract class PrintfDecorator{
+  # Printf printf
+  + PrintfDecorator(Printf printf)
+  + void printString(String source)
+}
+class CommonPrintf{
+  + void printString(String source)
+}
+
+class FilterPrintf{
+  + void printString(String source)
+}
+class Client{
+    +{static}void main(String[] args)
+}
+PrintfDecorator....|> Printf
+CommonPrintf..|> Printf
+FilterPrintf--|> PrintfDecorator
+PrintfDecorator-->Printf :装饰
+Client..>Printf
+@enduml

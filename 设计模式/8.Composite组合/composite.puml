@@ -1,0 +1,24 @@
+@startuml
+interface Department{
+   + int getId()
+   + void addSubordinate(Department department)
+   + void removeSubordinate(int id)
+   + void logInfo()
+}
+class ActualDepartment{
+   - int id
+   - String name
+   - List<Department> subordinates
+   + ActualDepartment(int id, String name)
+   + int getId()
+   + void addSubordinate(Department department)
+   + void removeSubordinate(int id)
+   + void logInfo()
+}
+class Client{
+    +{static}void main(String[] args)
+}
+ActualDepartment ..|> Department :实现
+ActualDepartment --> Department :持有
+Client ..> Department
+@enduml
