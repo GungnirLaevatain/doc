@@ -1,0 +1,26 @@
+@startuml
+interface Fruit{
+   + {abstract} void accept(Visitor visitor)
+}
+interface Visitor{
+   + {abstract} void visit(Apple fruit)
+   + {abstract} void visit(Banana fruit)
+}
+class Apple{
+   + void accept(Visitor visitor)
+}
+class Banana{
+   + void accept(Visitor visitor)
+}
+class FruitVisitor{
+   + void visit(Apple fruit)
+   + void visit(Banana fruit)
+}
+class Client{
+}
+Apple ..|> Fruit
+Banana ..|> Fruit
+FruitVisitor..|>Visitor
+Client ..>Fruit
+Client ..>Visitor
+@enduml
