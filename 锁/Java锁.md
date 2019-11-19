@@ -30,7 +30,8 @@ JDK1.6 对锁的实现引入了大量的优化，如偏向锁、轻量级锁、�
 两者都是独占锁、都是可重入锁
 ### 1.4.2 不同点
 1. Synchronized基于JVM的监视器，ReentrantLock则是基于在代码层面实现的
-2. ReentrantLock可以设为公平锁模式
+2. ReentrantLock可以设为公平锁模式,其公平锁实现方式在于在tryAcquire方法进行CAS操作前会先判断是否存在等待的线程，
+若存在则直接返回失败，以保证锁能被之前等待的线程所获得
 3. ReentrantLock可被设置为响应中断模式
 4. ReentrantLock提供Condition以实现选择性通知
 # 2 AQS
