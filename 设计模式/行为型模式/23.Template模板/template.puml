@@ -1,0 +1,16 @@
+@startuml
+abstract class Software{
+   # abstract void init()
+   # abstract void destroy()
+}
+class Idea{
+   #  void init()
+   #  void destroy()
+}
+class Eclipse{
+   #  void init()
+   #  void destroy()
+}
+Idea --|> Software
+Eclipse --|> Software
+@enduml

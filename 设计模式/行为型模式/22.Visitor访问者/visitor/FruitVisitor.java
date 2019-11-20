@@ -1,3 +1,4 @@
+package visitor;
 public class FruitVisitor implements Visitor {
     @Override
     public void visit(Apple fruit) {
