@@ -217,9 +217,15 @@
 
 		Object exposedObject = bean;
 		try {
-			// 填充bean的属性
+			// 填充bean的属性并调用后置处理器,例如
+			// InstantiationAwareBeanPostProcessor#postProcessAfterInstantiation
+			// InstantiationAwareBeanPostProcessor#postProcessProperties
+			// InstantiationAwareBeanPostProcessor#postProcessPropertyValues
 			populateBean(beanName, mbd, instanceWrapper);
-			// 调用初始化方法及对应的后置处理器
+			// 调用初始化方法及对应的后置处理器,例如
+			// BeanPostProcessor#postProcessBeforeInitialization
+			// InitializingBean#afterPropertiesSet和配置指定的init方法
+			// BeanPostProcessor#postProcessAfterInitialization
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
