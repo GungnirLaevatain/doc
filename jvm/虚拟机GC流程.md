@@ -69,5 +69,5 @@ Remembered Set Logs内，并且在该阶段会和Remembered Set进行合并，�
 |  ----    | ----  |
 | Serial   | CMS、Serial Old |
 | ParNew   | CMS、Serial Old |
-| Parallel | Scavenge SerialOld、Parallel Old |
+| Parallel Scavenge| Serial Old、Parallel Old |
 | G1       | G1 |
